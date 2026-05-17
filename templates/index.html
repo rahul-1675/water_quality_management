@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Water Quality Prediction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="background-animation"></div>
+    
+    <div class="container">
+        <header>
+            <h1>💧 Water Quality Predictor</h1>
+            <p>AI-powered analysis of water safety</p>
+        </header>
+
+        <main>
+            <section class="glass-card single-predict">
+                <h2>Single Prediction</h2>
+                <form id="prediction-form">
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label for="pH">pH Level</label>
+                            <input type="number" step="0.01" id="pH" name="pH" required placeholder="e.g. 7.0">
+                        </div>
+                        <div class="input-group">
+                            <label for="Turbidity">Turbidity (NTU)</label>
+                            <input type="number" step="0.01" id="Turbidity" name="Turbidity" required placeholder="e.g. 1.2">
+                        </div>
+                        <div class="input-group">
+                            <label for="DO">Dissolved Oxygen (DO)</label>
+                            <input type="number" step="0.01" id="DO" name="DO" required placeholder="e.g. 8.0">
+                        </div>
+                        <div class="input-group">
+                            <label for="TDS">Total Dissolved Solids (TDS)</label>
+                            <input type="number" step="0.01" id="TDS" name="TDS" required placeholder="e.g. 500">
+                        </div>
+                        <div class="input-group">
+                            <label for="Temperature">Temperature (°C)</label>
+                            <input type="number" step="0.01" id="Temperature" name="Temperature" required placeholder="e.g. 25">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn primary-btn">Predict WQI</button>
+                </form>
+                
+                <div id="result-container" class="hidden">
+                    <div class="wqi-meter">
+                        <svg viewBox="0 0 100 50" class="gauge">
+                            <path class="gauge-bg" d="M 10 50 A 40 40 0 0 1 90 50" fill="none" stroke-width="10" stroke-linecap="round"/>
+                            <path class="gauge-fill" id="gauge-fill" d="M 10 50 A 40 40 0 0 1 90 50" fill="none" stroke-width="10" stroke-linecap="round" stroke-dasharray="125.6" stroke-dashoffset="125.6"/>
+                        </svg>
+                        <div class="wqi-value" id="wqi-value">--</div>
+                    </div>
+                    <h3 id="wqi-advice">--</h3>
+                </div>
+            </section>
+
+            <section class="glass-card batch-predict">
+                <h2>Batch Processing</h2>
+                <p>Upload a CSV file containing water samples to get batch predictions.</p>
+                <div class="upload-area" id="upload-area">
+                    <input type="file" id="csv-file" accept=".csv" hidden>
+                    <label for="csv-file" class="upload-label">
+                        <span class="upload-icon">📁</span>
+                        <span id="file-name">Click to browse or drag and drop</span>
+                        <span class="upload-hint">Must contain pH, Turbidity, DO, TDS, Temperature columns</span>
+                    </label>
+                </div>
+                <button id="batch-btn" class="btn secondary-btn" disabled>Process File</button>
+            </section>
+
+            <section class="glass-card metrics">
+                <h2>Model Performance</h2>
+                <p>Metrics for models trained on the dataset.</p>
+                <div class="chart-container">
+                    <canvas id="metricsChart"></canvas>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
